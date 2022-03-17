@@ -6,10 +6,10 @@ from sklearn.naive_bayes import GaussianNB
 app = Flask(__name__)
 
 @app.route('/')
-def Index():
-    return "<h1> Hello World </h1>"
+def main():
+    return "api is calling"
 
-@app.route('/<string:symptomsgg>')
+@app.route('/symptoms=<string:symptomsgg>')
 def Predicted(symptomsgg):
     l1=['back_pain','constipation','abdominal_pain','diarrhoea','mild_fever','yellow_urine',
     'yellowing_of_eyes','acute_liver_failure','fluid_overload','swelling_of_stomach',
@@ -46,8 +46,7 @@ def Predicted(symptomsgg):
     for x in range(0,len(l1)):
         l2.append(0)
 
-    #Training
-    dataset=pd.read_csv(r"dataset\Training.csv")
+    dataset=pd.read_csv(r"./dataset/Training.csv")
 
     dataset.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
     'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
@@ -65,8 +64,7 @@ def Predicted(symptomsgg):
     y = dataset[["prognosis"]]
     np.ravel(y)
 
-    #Testing
-    tr=pd.read_csv(r"dataset\Testing.csv")
+    tr=pd.read_csv(r"./dataset/Testing.csv")
     tr.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
     'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
     'Migraine':11,'Cervical spondylosis':12,'Paralysis (brain hemorrhage)':13,'Jaundice':14,'Malaria':15,'Chicken pox':16,'Dengue':17,'Typhoid':18,'hepatitis A':19,'Hepatitis B':20,'Hepatitis C':21,'Hepatitis D':22,'Hepatitis E':23,'Alcoholic hepatitis':24,'Tuberculosis':25,'Common Cold':26,'Pneumonia':27,'Dimorphic hemmorhoids(piles)':28,'Heart attack':29,'Varicose veins':30, 'Hypothyroidism':31,'Hyperthyroidism':32,'Hypoglycemia':33,'Osteoarthristis':34,'Arthritis':35,'(vertigo) Paroymsal  Positional Vertigo':36,'Acne':37,'Urinary tract infection':38,'Psoriasis':39,'Impetigo':40}},inplace=True)
@@ -75,8 +73,8 @@ def Predicted(symptomsgg):
     y_test = tr[["prognosis"]]
     np.ravel(y_test)
 
-    symptom = symptomsgg.split(",")
-
+    symptom = symptomsgg.split("&")
+    print(symptom)
     S1 = symptom[0]
     S2 = symptom[1]
     S3 = symptom[2]
@@ -114,7 +112,8 @@ def Predicted(symptomsgg):
             "Designation": "Dermatalogist", 
             "Qualification":"MBBS, MD",
             "Rating": 4.8,
-            "Consultation Fee": 800}
+            "Consultation Fee": 800,
+            "Tests": "Blood Test, Allergy Test, Prick Test"}
 
     elif a==2 or a==3 or a==5 or a==8 or a==19 or a==20 or a==21 or a==22 or a==23 or a==24:
         result = {
@@ -123,7 +122,8 @@ def Predicted(symptomsgg):
             "Designation": "Gastroenterologist",
             "Qualification": "MBBS, MD",
             "Rating": 4.6,
-            "Consultation Fee": 500}
+            "Consultation Fee": 500,
+            "Tests": "Endoscopy, Colonoscopy, Sigmoidoscopy"}
 
     elif a==12 or a==38:
         result = {
@@ -132,7 +132,8 @@ def Predicted(symptomsgg):
             "Designation": "Gynacologist", 
             "Qualification": "MBBS, MD", 
             "Rating": 5.0, 
-            "Consultation Fee": 1500}
+            "Consultation Fee": 1500,
+            "Tests": "Ultrasound, STD Test, Biopsy"}
 
     elif a==34 or a==35:
         result = {
@@ -141,7 +142,8 @@ def Predicted(symptomsgg):
             "Designation": "Orthologist", 
             "Qualification": "MBBS, MD", 
             "Rating": 4.2, 
-            "Consultation Fee": 500}
+            "Consultation Fee": 500,
+            "Tests": "Arthrography, X-Ray, CT Scan"}
         
     elif a==9 or a==27 or a==25:
         result = {
@@ -150,7 +152,8 @@ def Predicted(symptomsgg):
             "Designation": "Pulmonologist", 
             "Qualification": "MBBS, MD", 
             "Rating": 4.7, 
-            "Consultation Fee": 1800}
+            "Consultation Fee": 1800,
+            "Tests": "Spirometry, Plethysmography, CT scan"}
 
     elif a==7 or a==14 or a==15 or a==17 or a==18 or a==26:
         result = {
@@ -159,7 +162,8 @@ def Predicted(symptomsgg):
             "Designation": "Physician", 
             "Qualification": "MBBS, MD", 
             "Rating": 4.6, 
-            "Consultation Fee": 500}
+            "Consultation Fee": 500,
+            "Test": "Blood Test, Maleria Test Dengue Test"}
 
     elif a==29 or a==30:
         result = {
@@ -168,7 +172,8 @@ def Predicted(symptomsgg):
             "Designation": "Cardiologist", 
             "Qualification": "MBBS, MD", 
             "Rating": 5.0, 
-            "Consultation Fee": 2000}
+            "Consultation Fee": 2000,
+            "Test": "Endoscopy, ECG, Colour Doppler"}
         
     elif a==6 or a==31 or a==32:
         result = {
@@ -177,8 +182,8 @@ def Predicted(symptomsgg):
             "Designation": "Endocrinologist", 
             "Qualification": "MBBS, MD", 
             "Rating": 5.0, 
-            "Consultation Fee": 1500}
-
+            "Consultation Fee": 1500,
+            "Test": "Complete Blood Count, Thyroid, ACTH Level"}
     elif a==10 or a==11 or a==13 or a==28 or a==36:
         result = {
             "Deasease": t,
@@ -186,10 +191,11 @@ def Predicted(symptomsgg):
             "Designation": "Neurologist", 
             "Qualification": "MBBS, MD", 
             "Rating": 4.9, 
-            "Consultation Fee": 1500}
+            "Consultation Fee": 1500,
+            "Test": "MRI, CT Scan, PET"}
 
     return jsonify(result)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=True,debug=True)
