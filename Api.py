@@ -5,7 +5,7 @@ from sklearn.naive_bayes import GaussianNB
 
 app = Flask(__name__)
 
-@app.route('/Predictions/<string:symptomsgg>')
+@app.route('/<string:symptomsgg>')
 def Predicted(symptomsgg):
     l1=['back_pain','constipation','abdominal_pain','diarrhoea','mild_fever','yellow_urine',
     'yellowing_of_eyes','acute_liver_failure','fluid_overload','swelling_of_stomach',
