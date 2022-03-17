@@ -75,18 +75,12 @@ def Predicted(symptomsgg):
 
     symptom = symptomsgg.split("&")
     print(symptom)
-    S1 = symptom[0]
-    S2 = symptom[1]
-    S3 = symptom[2]
-    S4 = symptom[3]
-    S5 = symptom[4]
-
+    
     gnb = GaussianNB()
     gnb=gnb.fit(X,np.ravel(y))
     
-    symptoms = [S1,S2,S3,S4,S5]
     for k in range(0,len(l1)):
-        for z in symptoms:
+        for z in symptom:
             if(z==l1[k]):
                 l2[k]=1
 
